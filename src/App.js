@@ -2,22 +2,43 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { render } from '@testing-library/react';
+import producTile from './components/producTile';
+const productsArray=[
+    {
+        "id":1,
+        "title":"Oneplus 7",
+        "price":"Rs.30000"
+    },
+    {
+        "id":2,
+        "title":"Samsung",
+        "price":"Rs.20000"
+    },
+    {
+        "id":3,
+        "title":"vivo v17",
+        "price":"Rs.25000"
+    }
+
+]
 class App extends React.Component {
     constructor(props){
         super(props);
         this.state={
             firstState: 'hello world',
-            cartCount: 0
+            cartCount: 0,
+            products:[]
+        
+        
         }
     }
         
 
 
     componentDidMount(){
-        this.setState({
-            firstState: 'Welcome to our shop'
-        })
-    }
+        this.loadProduct()
+        }
+    
     componentDidUpdate(prevProps,prevState)
     {
         if(this.state.cartCount>=10)
@@ -30,14 +51,26 @@ class App extends React.Component {
             cartCount:newCount
         })
     }
-    
+
+   loadProduct(){
+       this.setState({
+        products:productsArray 
+
+       })
+   }
+   
     
 
  render() {
+     const productsList=this.state.products.map((product)=>{
+         return producTile(this.addCount.bind(this),product)
+     })
+     console.log(productsList)
     return (
    
         <div className="container">
           <nav className="navbar navbar-light" style={{"backgroundColor": "lightcoral"}}>
+          
     
     <img src="download.jpg." width="70" height="150" className="d-inline-block align-top" alt=""/>
     {this.state.firstState}
@@ -47,35 +80,15 @@ class App extends React.Component {
     </p>
     </nav>
             <div className="row">
-                <div className="col-3">
-                    <div className="card mb-3" style={{"maxWidth": "540px"}}>
-                        <div className="row no-gutters">
-                            <div className="col-md-4">
-                                <img src="1.jpg" className="card-img" alt="..."/>
-                            </div>
-                            <div className="col-md-8">
-                                <div className="card-body">
-                                    <h5 className="card-title">Headset</h5>
-                                    <button
-                                     className="btn btn-primary add-btn"
-                                     onClick={()=>{
-                                        this.addCount()
-                                        }}
-                                    >
-                                    Add
-                                     </button>
-                                    </div>
-                                
-                            </div>
-                        </div>
-                    </div>
+                {productsList}
+                
                 </div>
                 
             <p align="right">
               <button type="button" className="btn btn-primary btn-lg">Checkout</button></p>
     
     </div>
-    </div>
+    
     
     
       );
